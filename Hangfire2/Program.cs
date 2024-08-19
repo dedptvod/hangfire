@@ -7,8 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 builder.Services.AddEndpointsApiExplorer();
@@ -25,7 +23,6 @@ builder.Services.AddHangfireServer();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -37,12 +34,8 @@ app.UseHangfireDashboard("/dashboard");
 
 var test = new Test(app.Services);
 
-// RecurringJob.AddOrUpdate(
-//     "move-data-to-dataitems2",
-//     () => test.MoveDataToDataItems2(),
-//     Cron.Hourly); // Move data every hour
-// //
-// // BackgroundJob.Enqueue(() => test.MoveDataToDataItems2());
+//create records
+//BackgroundJob.Enqueue(() => test.CreateRecords());
 
 app.MapGet("/", () =>
 {
@@ -74,21 +67,21 @@ public class Test
 
     public void CreateRecords()
     {
-        // using var scope = _serviceProvider.CreateScope();
-        // var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        //
-        //
-        // for (int i = 0; i < 15000; i++)
-        // {
-        //     dbContext.DataItems.Add(new DataItem
-        //     {
-        //         SourceColumn = $"SourceValue {i}",
-        //         DestinationColumn = string.Empty,
-        //         Processed = false
-        //     });
-        // }
-        //
-        // dbContext.SaveChanges();
+        using var scope = _serviceProvider.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        
+        
+        for (int i = 0; i < 15000; i++)
+        {
+            dbContext.DataItems.Add(new DataItem
+            {
+                SourceColumn = $"SourceValue {i}",
+                DestinationColumn = string.Empty,
+                Processed = false
+            });
+        }
+        
+        dbContext.SaveChanges();
     }
     
     public void MoveDataToDataItems2(int taskNumber)
@@ -134,26 +127,4 @@ public class DataItem2
     public string SourceColumn { get; set; }
     public string DestinationColumn { get; set; }
     public bool Processed { get; set; }
-}
-
-public class MoveDataBenchmark
-{
-    private Test _test;
-
-    [GlobalSetup]
-    public void Setup()
-    {
-        var serviceProvider = new ServiceCollection()
-            .AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer("Server=VIACHESLAVMW\\SQLEXPRESS;Database=HANGFIRE;Trusted_Connection=True;TrustServerCertificate=True"))
-            .BuildServiceProvider();
-
-        _test = new Test(serviceProvider);
-    }
-
-    [Benchmark]
-    public void MoveDataToDataItems2Benchmark()
-    {
-        _test.MoveDataToDataItems2(1);
-    }
 }
