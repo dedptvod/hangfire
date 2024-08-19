@@ -93,7 +93,7 @@ public class Test
 
         foreach (var item in itemsToMove)
         {
-            dbContext.DataItems2.Add(new DataItem2
+            dbContext.DataItems2.Add(new DataItem
             {
                 SourceColumn = item.SourceColumn,
                 DestinationColumn = item.DestinationColumn,
@@ -115,10 +115,3 @@ public class DataItem
     public bool Processed { get; set; }
 }
 
-public class DataItem2
-{
-    public int Id { get; set; }
-    public string SourceColumn { get; set; }
-    public string DestinationColumn { get; set; }
-    public bool Processed { get; set; }
-}
