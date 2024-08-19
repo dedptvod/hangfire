@@ -37,7 +37,7 @@ var test = new Test(app.Services);
 //create records
 //BackgroundJob.Enqueue(() => test.CreateRecords());
 
-app.MapGet("/", () =>
+app.MapGet("/job", () =>
 {
     var jobId = BackgroundJob.Enqueue(() => test.MoveDataToDataItems2(1));
     BackgroundJob.ContinueWith(jobId, () => test.MoveDataToDataItems2(2));
@@ -45,7 +45,7 @@ app.MapGet("/", () =>
     return Results.Ok();
 });
 
-app.MapGet("/ads", () =>
+app.MapGet("/manually_start", () =>
 {
     Test s = new(app.Services);
     s.MoveDataToDataItems2(1);
@@ -86,8 +86,6 @@ public class Test
     
     public void MoveDataToDataItems2(int taskNumber)
     {
-        var stopwatch = Stopwatch.StartNew();
-
         using var scope = _serviceProvider.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
@@ -106,10 +104,6 @@ public class Test
         }
 
         dbContext.SaveChanges();
-        
-        stopwatch.Stop();
-        var elapsedMs = stopwatch.ElapsedMilliseconds;
-        Console.WriteLine($"Task {taskNumber} completed in {elapsedMs} ms");
     }
 }
 
