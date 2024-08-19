@@ -1,0 +1,23 @@
+{
+  "Version": 1,
+  "Hash": "CY1btB3XVBSisQqQYF4IQXSSDTrvoKErqOZ7MjdI7+o=",
+  "Source": "ab89cf4d-0179-43da-b431-96030b72fad6",
+  "BasePath": "_content/ab89cf4d-0179-43da-b431-96030b72fad6",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "C:\\Dev4You\\ecoharpoon-bdo\\src\\Hangfire2\\Hangfire2\\Hangfire2.csproj",
+      "Version": 2,
+      "Source": "Hangfire2",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
